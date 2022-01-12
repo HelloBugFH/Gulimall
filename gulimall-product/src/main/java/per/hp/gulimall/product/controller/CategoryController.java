@@ -1,5 +1,6 @@
 package per.hp.gulimall.product.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import per.hp.common.utils.PageUtils;
@@ -22,12 +23,13 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("product/category")
+@Slf4j
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
     /**
-     * 查出所有的分类和子分类，并且组装起来
+     * 查出所有的分类和子分类，并且以树形结构组装起来
      * @return 组装好的page数据
      */
     @RequestMapping("/list/tree")
@@ -56,7 +58,7 @@ public class CategoryController {
     public R info(@PathVariable("catId") Long catId){
 		CategoryEntity category = categoryService.getById(catId);
 
-        return R.ok().put("category", category);
+        return R.ok().put("data", category);
     }
 
     /**
@@ -65,8 +67,8 @@ public class CategoryController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:category:save")
     public R save(@RequestBody CategoryEntity category){
+        log.info("添加菜单"+category.getName());
 		categoryService.save(category);
-
         return R.ok();
     }
 
@@ -76,8 +78,8 @@ public class CategoryController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
+        log.info("更新菜单"+category.getName());
 		categoryService.updateById(category);
-
         return R.ok();
     }
 

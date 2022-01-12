@@ -55,6 +55,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     private List<CategoryEntity> getChildren(CategoryEntity root, List<CategoryEntity> all) {
         List<CategoryEntity> children = all.stream()
                 .filter(categoryEntity -> {
+                    // 此处如果parentId==null 就get不到值 后续的map操作就无法进行 直接返回
                     return categoryEntity.getParentCid() == root.getCatId();
                 })
                 .map(menu->{
